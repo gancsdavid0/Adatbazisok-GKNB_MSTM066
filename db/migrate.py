@@ -15,7 +15,15 @@ def get_applied_migrations(conn):
     return {row[0] for row in result}
 
 def apply_migration(conn, filename):
-    path = os.path.join(MIGRATIONS_DIR, os.listdir(MIGRATIONS_DIR)[0])
+    index = 0
+    files = os.listdir(MIGRATIONS_DIR)
+
+    for i, f in enumerate(files):
+        if f == filename:
+            index = i
+            break
+
+    path = os.path.join(MIGRATIONS_DIR, os.listdir(MIGRATIONS_DIR)[index])
 
     with open(path, "r", encoding="utf-8") as file:
         sql = file.read()
@@ -28,16 +36,19 @@ def apply_migration(conn, filename):
 
 
 def migrate():
-    conn = sqlite3.connect(DB_NAME)
-    applied = get_applied_migrations(conn)
+    try:
+        with sqlite3.connect(DB_NAME) as conn:
+            applied = get_applied_migrations(conn)
+            migrations = sorted(f for f in os.listdir(MIGRATIONS_DIR) if f.endswith(".sql"))
+            for m in migrations:
+                if m not in applied:
+                    apply_migration(conn, m)
+                else:
+                    print(f"Kihagyva (már lefuttatva): {m}")
 
-    migrations = sorted(f for f in os.listdir(MIGRATIONS_DIR) if f.endswith(".sql"))
+    except sqlite3.Error as e:
+        print("Hiba:", e)
 
-    for m in migrations:
-        if m not in applied:
-            apply_migration(conn, m)
-        else:
-            print(f"Kihagyva (már lefuttatva): {m}")
 
 if __name__ == "__main__":
     migrate()
