@@ -1,6 +1,6 @@
 CREATE TABLE kepesitesek
 (
-    id             INT PRIMARY KEY NOT NULL,
+    id             INTEGER PRIMARY KEY AUTOINCREMENT,
     kepesites_neve TEXT            NOT NULL,
     leiras         TEXT
 );

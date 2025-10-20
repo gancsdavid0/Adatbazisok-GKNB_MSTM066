@@ -1,5 +1,5 @@
 CREATE TABLE telephelyek
 (
-    id       INT PRIMARY KEY           NOT NULL,
-    cimek_id INT REFERENCES cimek (id) NOT NULL
+    id       INTEGER PRIMARY KEY           AUTOINCREMENT,
+    cimek_id INTEGER REFERENCES cimek (id) NOT NULL
 );

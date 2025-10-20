@@ -1,6 +1,6 @@
 CREATE TABLE orokbefogadok
 (
-    id                    INT primary key NOT NULL,
+    id                    INTEGER primary key AUTOINCREMENT,
     keresztnev            TEXT            NOT NULL,
     vezeteknev            TEXT            NOT NULL,
     szuletesi_datum       TEXT            NOT NULL,

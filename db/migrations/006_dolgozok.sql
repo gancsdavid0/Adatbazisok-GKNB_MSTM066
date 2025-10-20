@@ -1,7 +1,7 @@
 CREATE TABLE dolgozok
 (
-    id              INT PRIMARY KEY                 NOT NULL,
-    telephelyek_id  INT REFERENCES telephelyek (id) NOT NULL,
+    id              INTEGER PRIMARY KEY                 AUTOINCREMENT,
+    telephelyek_id  INTEGER REFERENCES telephelyek (id) NOT NULL,
     keresztnev      TEXT                            NOT NULL,
     vezeteknev      TEXT                            NOT NULL,
     szuletesi_datum TEXT                            NOT NULL,
