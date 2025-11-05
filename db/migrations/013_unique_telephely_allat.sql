@@ -1,0 +1,2 @@
+CREATE UNIQUE INDEX id_telephely_allat
+ON telephelyek_befogadhato_allatok (befogadhato_allatok_id, telephelyek_id);

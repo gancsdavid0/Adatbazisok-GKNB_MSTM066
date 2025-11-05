@@ -1,8 +1,13 @@
 from menhely.models.allatok_model import AllatokModel
+from menhely.models.kisallat_egeszsegugyi_konyvek_model import KiskonyvekModel
 
 class AllatokService:
-    def __init__(self, allatok_model: AllatokModel):
+    def __init__(self, allatok_model: AllatokModel, kiskonyvek_model: KiskonyvekModel):
         self.model = allatok_model
+        self.kiskonyvek_model = kiskonyvek_model
+
+    #TODO {Minden lekérdezés a kiskönyvel és az oltásokkal kapcsolatban innen kerül lekérdezésre illetve kezelésre az állat classból
+    # de a kiskönyv és az oltások classokon keresztül lokális függvényekkel, pl get_oltasok {az oltások classból hívjuk}}
 
     def getByID(self, id):
         return self.model.getByID(id)

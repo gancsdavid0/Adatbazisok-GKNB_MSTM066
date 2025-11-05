@@ -1,5 +1,3 @@
-from typing import Any
-
 from menhely.models._base import Model
 from dataclasses import dataclass
 from menhely.models.orokbefogadok_model import Orokbefogado
@@ -21,7 +19,6 @@ class Allatok:
 class AllatokModel(Model):
     def __init__(self, conn):
         self.conn = conn
-
     def _get_params(self) -> dict:
         params = {"nev": input("Név: "), "szuletesi_ido": input("Születési idő: "),
                   "ivar": input("Ivar: "), "suly": input("Suly: "),
@@ -49,8 +46,21 @@ class AllatokModel(Model):
 
         return Allatok(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7], result[8], result[9]) if result else None
 
+    '''
+    
+    Állatok create:
+        - Adatok bekérése:
+            > allat letrehozasa
+            > kisallat_egeszsegugyi_konyvek tablaba
+        - telephelyek_befogadhato_allatok ellenörzése (befogadhato e az adott allat a megatodd IDjü telephelyre LÉTSZÁM? FAJTA?)
+        - ha igen kiszamítani befogaható e még a telephelyre az allat vagy mar megtelt a telephely kapacítása
+    
+    '''
     def create(self) -> Allatok:
-        pass
+        params = self._get_params()
+
+
+
 
     def read(self) -> list[Allatok] | None:
         allatok = []
