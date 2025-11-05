@@ -84,7 +84,7 @@ class DolgozokService:
                         print(f'Képesítés létrehozva ID: {uj_id}')
                         uj_kapcsolat_id = self.dk_model.create_with_ids(uj_id, dolgozo_id)
                         if uj_kapcsolat_id:
-                            print('Új hozzárendelés létrehozva ID: {uj_kapcsolat_id}')
+                            print(f'Új hozzárendelés létrehozva ID: {uj_kapcsolat_id}')
                         else:
                             print(f'Hiba a hozzárendelés létrehozása során.')
                     else:
@@ -94,7 +94,7 @@ class DolgozokService:
                     print("Nincs mit eltávolítani.")
                     return
 
-                kepesites_id = int(input("Adja meg az ELTÁVOLÍTANDÓ képesítés ID-jét: ", "id"))
+                kepesites_id = int(input("Adja meg az ELTÁVOLÍTANDÓ képesítés ID-jét: "))
 
                 self.dk_model.delete(dolgozo_id, kepesites_id)
                 print("Képesítés sikeresen eltávolítva.")

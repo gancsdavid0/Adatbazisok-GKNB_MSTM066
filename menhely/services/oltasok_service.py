@@ -18,3 +18,6 @@ class OltasokService:
 
     def delete(self, id):
         return self.model.delete(id)
+
+    def getBy_KiskonyvID(self, kiskonyvek_id):
+        return self.model.getBy_KiskonyvID(kiskonyvek_id)

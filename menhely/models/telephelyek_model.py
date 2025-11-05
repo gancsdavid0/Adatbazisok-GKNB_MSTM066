@@ -39,7 +39,7 @@ class TelephelyekModel(Model):
 
         except Exception as e:
             self.conn.rollback()
-            print(f"HIBA! A tranzakció visszavonva. Ok: {e}")
+            print(f"Hiba a telephely létrehozása közben: {e}")
             return None
 
         finally:
@@ -154,3 +154,54 @@ class TelephelyekModel(Model):
             print(f"{id}. rekord törölve lett")
         else:
             print(f'Hiba a {current_data} id cím törlése közben.')
+
+    def get_kapacitasok_by_telephely_id(self, id):
+        current_data = self.getByID(id)
+        if not current_data:
+            print(f'Nem létezik ilyen rekord')
+            return -1
+        query = """
+                SELECT  befogadhato_allatok.id, \
+                        befogadhato_allatok.allat_fajtaja,  \
+                        telephelyek_befogadhato_allatok.max_befogadhatosag 
+                FROM telephelyek_befogadhato_allatok  \
+                         INNER JOIN \
+                     befogadhato_allatok ON telephelyek_befogadhato_allatok.befogadhato_allatok_id = befogadhato_allatok.id
+                WHERE telephelyek_befogadhato_allatok.telephelyek_id = ?
+                """
+        cursor = None
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(query, (current_data.id,))
+            return cursor.fetchall()
+        except Exception as e:
+            print(f"Hiba a telephely kapacitásának lekérdezése közben: {e}")
+            return -1
+        finally:
+            if cursor:
+                cursor.close()
+
+
+    def get_befogadato_allatok_byid(self, id):
+        current_data = self.getByID(id)
+        if not current_data:
+            print(f'Nem létezik ilyen rekord')
+            return
+        query = """
+                SELECT befogadhato_allatok.allat_fajtaja, \
+                       befogadhato_allatok.megjegyzes
+                FROM befogadhato_allatok
+                         INNER JOIN telephelyek_befogadhato_allatok ON befogadhato_allatok.id = telephelyek_befogadhato_allatok.befogadhato_allatok_id
+                WHERE telephelyek_befogadhato_allatok.telephelyek_id  = ? \
+                """
+        cursor = None
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(query, (current_data.id,))
+            return cursor.fetchall()
+        except Exception as e:
+            print(f"Hiba a telephely befogadhatóságának lekérdezése közben: {e}")
+            return []
+        finally:
+            if cursor:
+                cursor.close()

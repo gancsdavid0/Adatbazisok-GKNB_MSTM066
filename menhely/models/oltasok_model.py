@@ -111,3 +111,8 @@ class OltasokModel(Model):
         self.conn.commit()
 
         print(f"{id}. rekord törölve lett")
+
+    def getBy_KiskonyvID(self, kiskonyvek_id):
+        query = "SELECT * FROM oltasok WHERE kisallat_egeszsegugyi_konyvek_id = ?"
+        result = self.conn.execute(query, (kiskonyvek_id,)).fetchone()
+        return Oltas(result[0], result[1], result[2], result[3], result[4], result[5], result[6], ) if result else None
