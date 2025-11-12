@@ -45,6 +45,9 @@ class TelephelyekService:
 
         if not self.read():
             return
+        else:
+            for i in self.model.read():
+                print(i)
         try:
             telephely_id = input("Válassza ki a kezelni kívánt telephely ID-jét: ")
 
@@ -72,6 +75,7 @@ class TelephelyekService:
 
                 if choice == '1':
                     if not self.model.get_kapacitasok_by_telephely_id(telephely_id): continue
+
 
                     allatfajta_id = input("Melyik állatfajta ID-jét állítja be? ")
 

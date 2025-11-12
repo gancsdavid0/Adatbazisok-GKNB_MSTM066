@@ -53,6 +53,7 @@ class DolgozokModel(Model):
             new_id = cursor.lastrowid
 
             self.conn.commit()
+            print(f'Dolgozó sikeresen felvéve! ID: {new_id}')
             return self.getByID(new_id)
 
         except Exception as e:
