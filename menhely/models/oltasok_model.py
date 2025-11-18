@@ -34,14 +34,34 @@ class OltasokModel(Model):
         #print(result)
         return Oltas(result[0], result[1], result[2], result[3], result[4], result[5], result[6],) if result else None
 
-    def create(self) -> Oltas:
-        params = self._get_params()
+    def create(self, allat_id) -> Oltas:
+        query_id = ("""SELECT kisallat_egeszsegugyi_konyvek.id FROM kisallat_egeszsegugyi_konyvek
+            where allatok_id = :allatok_id""")
 
         query = (
             "INSERT INTO oltasok (kisallat_egeszsegugyi_konyvek_id, oltas_tipusa, oltas_idopontja, oltas_ervenyessege, allatorvos_neve, megjegyzes)"
             " VALUES (:kisallat_egeszsegugyi_konyvek_id, :oltas_tipusa, :oltas_idopontja, :oltas_ervenyessege, :allatorvos_neve, :megjegyzes)")
+
         try:
             cursor = self.conn.cursor()
+
+            cursor.execute(query_id, {"allatok_id" :allat_id})
+            result = cursor.fetchone()
+
+            if result is None:
+                print("Hiba: Ennek az állatnak nincs egészségügyi kiskönyve!")
+                return None
+
+            konyv_id = result[0]
+
+            params = {
+                "kisallat_egeszsegugyi_konyvek_id": konyv_id,
+                "oltas_tipusa": input("Oltás típúsa: "),
+                "oltas_idopontja": input("Oltás időpontja: "),
+                "oltas_ervenyessege": input("Oltás érvényessége: "),
+                "allatorvos_neve": input("Állatorvos neve: "),
+                "megjegyzes": input("Megjegyzés: "),
+            }
             cursor.execute(query, params)
             new_id = cursor.lastrowid
 
@@ -116,3 +136,23 @@ class OltasokModel(Model):
         query = "SELECT * FROM oltasok WHERE kisallat_egeszsegugyi_konyvek_id = ?"
         result = self.conn.execute(query, (kiskonyvek_id,)).fetchone()
         return Oltas(result[0], result[1], result[2], result[3], result[4], result[5], result[6], ) if result else None
+
+    def getBy_allatokID(self, allatok_id):
+        query = """SELECT allatok.id, o.id, o.oltas_tipusa, o.oltas_idopontja, o.oltas_ervenyessege, o.oltas_ervenyessege, o.allatorvos_neve, o.megjegyzes from allatok
+            INNER JOIN main.kisallat_egeszsegugyi_konyvek kek on allatok.id = kek.allatok_id
+            INNER JOIN main.oltasok o on kek.id = o.kisallat_egeszsegugyi_konyvek_id
+                where allatok.id = :allatok_id"""
+
+        try:
+            cursor = self.conn.cursor()
+
+            params = {"allatok_id": allatok_id}
+
+            cursor.execute(query, params)
+
+            rows = cursor.fetchall()
+            return rows
+
+        except Exception as e:
+            print(f"Hiba az oltások lekérdezésekor: {e}")
+            return []

@@ -31,10 +31,9 @@ class Menu():
             print('\n--- Állatok kezelése ---')
             print('Válasszon az alábbi lehetőségek közül: ')
             print('1. Állatok listázása')
-            #TODO
-            print('2. (NINCSEN MEG) Új állatok felvétele')
-            print('3. (NINCSEN MEG) Állat adatainak módosítása')
-            print('4. (NINCSEN MEG) Oltások kezelése')
+            print('2. Új állatok felvétele')
+            print('3. Állat adatainak módosítása')
+            print('4. Oltások kezelése')
             print('0. Vissza')
             self._subchoice = int(input('Választás: '))
 
@@ -43,11 +42,51 @@ class Menu():
                     for i in self._allatok.read():
                         print(i)
                 case 2:
-                    pass
+                    for i in self._befogadhato_allatok.read():
+                        print(i)
+                    befogadhato_allatok_id = int(input("Add meg a felvenni kívánt állat típusának ID-ját: "))
+
+                    for i in self._telephelyek.read():
+                        print(i)
+                    telephelyek_id = int(input("Add meg a telephely ID-ját: "))
+
+                    self._allatok.create(befogadhato_allatok_id, telephelyek_id)
                 case 3:
-                    pass
+                    for i in self._allatok.read():
+                        print(i)
+                    id = int(input("Adja meg a frissíteni kívánt állat ID-ját: "))
+
+                    self._allatok.update(id)
                 case 4:
-                    pass
+                    oltasokChoise = None
+                    while oltasokChoise != 0:
+                        print('\n--- Oltások kezelése ---')
+                        print('Válasszon az alábbi lehetőségek közül: ')
+                        print('1. Oltások kiírása állat ID alapján')
+                        print('2. Új oltás felvétele')
+                        print('3. Oltás törlése')
+                        print('0. Vissza')
+                        oltasokChoise = int(input('Választás: '))
+                        match oltasokChoise:
+                            case 1:
+                                for i in self._allatok.read():
+                                    print(i)
+                                allatok_id = int(input("Adja meg az állat ID-ját az oltásainak lekérdezéséhez: "))
+                                for i in self._oltasok.getBy_allatokID(allatok_id):
+                                    print(i)
+                            case 2:
+                                for i in self._allatok.read():
+                                    print(i)
+                                id = int(input("Melyik állathoz szeretnél oltást adni?"))
+                                self._oltasok.create(id)
+                            case 3:
+                                for i in self._oltasok.read():
+                                    print(i)
+                                id = int(input("Adja meg az oltás ID-ját: "))
+                                self._oltasok.delete(id)
+                            case 0:
+                                continue
+
                 case 0:
                     continue
 
@@ -138,8 +177,7 @@ class Menu():
             print('Válasszon az alábbi lehetőségek közül: ')
             print('1. Örökbefogadások listázása')
             print('2. Örökbefogadható állatok listázása')
-            #TODO
-            print('3. (NINCSEN MEG) Új örökbefogadás  felvétele')
+            print('3. örökbefogadás indítása')
             print('0. Vissza')
             self._subchoice = int(input('Választás: '))
 
@@ -151,7 +189,23 @@ class Menu():
                     for i in self._allatok.orokbefogadhato_allatok():
                         print(i)
                 case 3:
-                    pass
+                    for i in self._allatok.orokbefogadhato_allatok():
+                        print(i)
+                    allatok_id = int(input("Adja meg az örökbe fogadni kívánt állat ID-ját: "))
+
+                    for i in self._dolgozok.read():
+                        print(i)
+                    dolgozok_id = int(input("Adja meg a dolgozó ID-ját: "))
+
+                    for i in self._orokbefogadok.read():
+                        print(i)
+                    orokbefogadok_id = int(input("Adja meg az örökbefogadó ID-ját: "))
+
+                    for i in self._telephelyek.read():
+                        print(i)
+                    telephelyek_id = int(input("Adja meg a telephely ID-ját: "))
+
+                    print(self._allatok.orokbefogadas(allatok_id , dolgozok_id, orokbefogadok_id, telephelyek_id))
                 case 0:
                     continue
 

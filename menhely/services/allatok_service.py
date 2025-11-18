@@ -6,20 +6,17 @@ class AllatokService:
         self.allatok_model = AllatokModel(conn)
         self.kiskonyvek_model = KiskonyvekModel(conn)
 
-    #TODO {Minden lekérdezés a kiskönyvel és az oltásokkal kapcsolatban innen kerül lekérdezésre illetve kezelésre az állat classból
-    # de a kiskönyv és az oltások classokon keresztül lokális függvényekkel, pl get_oltasok {az oltások classból hívjuk}}
-
     def getByID(self, id):
         return self.allatok_model.getByID(id)
 
-    def create(self):
-        return self.allatok_model.create()
+    def create(self, befogadhato_allatok_id, telephelyek_id):
+        return self.allatok_model.create(befogadhato_allatok_id, telephelyek_id)
 
     def read(self):
         return self.allatok_model.read()
 
-    def update(self):
-        return self.allatok_model.update()
+    def update(self, id):
+        return self.allatok_model.update(id)
 
     def delete(self, id):
         return self.allatok_model.delete(id)
@@ -30,5 +27,5 @@ class AllatokService:
     def orokbefogadott_allatok(self):
         return self.allatok_model.orokbefogadott_allatok()
 
-    def orokbefogadas(self):
-        return self.allatok_model.orokbefogadas()
+    def orokbefogadas(self, allatok_id , dolgozok_id, orokbefogadok_id, telephelyek_id):
+        return self.allatok_model.orokbefogadas(allatok_id , dolgozok_id, orokbefogadok_id, telephelyek_id)

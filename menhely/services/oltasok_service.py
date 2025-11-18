@@ -2,13 +2,13 @@ from menhely.models.oltasok_model import OltasokModel
 
 class OltasokService:
     def __init__(self, conn):
-        self.model = OltasokModel
+        self.model = OltasokModel(conn)
 
     def getByID(self, id):
         return self.model.getByID(id)
 
-    def create(self):
-        return self.model.create()
+    def create(self, allat_id):
+        return self.model.create(allat_id)
 
     def read(self):
         return self.model.read()
@@ -21,3 +21,6 @@ class OltasokService:
 
     def getBy_KiskonyvID(self, kiskonyvek_id):
         return self.model.getBy_KiskonyvID(kiskonyvek_id)
+
+    def getBy_allatokID(self, allatok_id):
+        return self.model.getBy_allatokID(allatok_id)
