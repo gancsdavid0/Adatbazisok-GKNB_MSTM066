@@ -1,8 +1,8 @@
 from menhely.models.befogadhato_allatok_model import Befogadhato_Allatok_Model
 
 class Befogadhato_Allatok_Service:
-    def __init__(self, bef_allatok_model: Befogadhato_Allatok_Model):
-        self.model = bef_allatok_model
+    def __init__(self, conn):
+        self.model = Befogadhato_Allatok_Model(conn)
 
     def getByID(self, id):
         return self.model.getByID(id)

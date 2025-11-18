@@ -3,10 +3,11 @@ from menhely.models.kepesitesek_model import KepesitesModel
 from menhely.models.dolgozok_kepesitesek_model import Dolgozo_kepesites_model
 
 class DolgozokService:
-    def __init__(self, dolgozok_model: DolgozokModel, kepesites_model: KepesitesModel, dk_model: Dolgozo_kepesites_model):
-        self.model = dolgozok_model
-        self.kepesites_model = kepesites_model
-        self.dk_model = dk_model
+    def __init__(self, conn):
+        self.model = DolgozokModel(conn)
+        self.kepesites_model = KepesitesModel(conn)
+        self.dk_model = Dolgozo_kepesites_model(conn)
+
 
     def getByID(self, id):
         return self.model.getByID(id)

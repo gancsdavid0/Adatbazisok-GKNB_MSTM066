@@ -2,33 +2,33 @@ from menhely.models.allatok_model import AllatokModel
 from menhely.models.kisallat_egeszsegugyi_konyvek_model import KiskonyvekModel
 
 class AllatokService:
-    def __init__(self, allatok_model: AllatokModel, kiskonyvek_model: KiskonyvekModel):
-        self.model = allatok_model
-        self.kiskonyvek_model = kiskonyvek_model
+    def __init__(self, conn):
+        self.allatok_model = AllatokModel(conn)
+        self.kiskonyvek_model = KiskonyvekModel(conn)
 
     #TODO {Minden lekérdezés a kiskönyvel és az oltásokkal kapcsolatban innen kerül lekérdezésre illetve kezelésre az állat classból
     # de a kiskönyv és az oltások classokon keresztül lokális függvényekkel, pl get_oltasok {az oltások classból hívjuk}}
 
     def getByID(self, id):
-        return self.model.getByID(id)
+        return self.allatok_model.getByID(id)
 
     def create(self):
-        return self.model.create()
+        return self.allatok_model.create()
 
     def read(self):
-        return self.model.read()
+        return self.allatok_model.read()
 
     def update(self):
-        return self.model.update()
+        return self.allatok_model.update()
 
     def delete(self, id):
-        return self.model.delete(id)
+        return self.allatok_model.delete(id)
 
     def orokbefogadhato_allatok(self):
-        return self.model.orokbefogadhato_allatok()
+        return self.allatok_model.orokbefogadhato_allatok()
 
     def orokbefogadott_allatok(self):
-        return self.model.orokbefogadott_allatok()
+        return self.allatok_model.orokbefogadott_allatok()
 
     def orokbefogadas(self):
-        return self.model.orokbefogadas()
+        return self.allatok_model.orokbefogadas()

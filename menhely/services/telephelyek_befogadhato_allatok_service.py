@@ -2,8 +2,8 @@ from menhely.models.telephelyek_befogadhato_allatok_model import Telephely_Befog
 
 
 class Telephely_Befogadhato_Allatok_service(object):
-    def __init__(self, tba_m: Telephely_Befogadhato_Allatok_Modell):
-        self.model = tba_m
+    def __init__(self, conn):
+        self.model = Telephely_Befogadhato_Allatok_Modell(conn)
 
     def getbyid(self, id):
         return self.model.getByID(id)

@@ -1,8 +1,8 @@
 from menhely.models.orokbefogadok_model import OrokbefogadokModel
 
 class OrokbefogadoService:
-    def __init__(self, orokbefogadok_model: OrokbefogadokModel):
-        self.model = orokbefogadok_model
+    def __init__(self, conn):
+        self.model = OrokbefogadokModel(conn)
 
     def getByID(self, id):
         return self.model.getByID(id)

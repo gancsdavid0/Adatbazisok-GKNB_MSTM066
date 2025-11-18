@@ -1,8 +1,8 @@
 from menhely.models.oltasok_model import OltasokModel
 
 class OltasokService:
-    def __init__(self, oltasok_model: OltasokModel):
-        self.model = oltasok_model
+    def __init__(self, conn):
+        self.model = OltasokModel
 
     def getByID(self, id):
         return self.model.getByID(id)

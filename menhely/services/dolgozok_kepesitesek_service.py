@@ -2,8 +2,8 @@ from menhely.models.dolgozok_kepesitesek_model import Dolgozo_kepesites_model
 
 
 class Dolgozok_kepesitesek_service(object):
-    def __init__(self, dk_model: Dolgozo_kepesites_model):
-        self.model = dk_model
+    def __init__(self, conn):
+        self.model = Dolgozo_kepesites_model(conn)
 
     def getbyid(self, id):
         return self.model.getByID(id)

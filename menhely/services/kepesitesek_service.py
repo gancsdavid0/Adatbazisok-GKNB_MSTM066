@@ -1,8 +1,8 @@
 from menhely.models.kepesitesek_model import KepesitesModel
 
 class KepesitesekService:
-    def __init__(self, kepesites_model: KepesitesModel):
-        self.model = kepesites_model
+    def __init__(self, conn):
+        self.model = KepesitesModel(conn)
 
     def getByID(self, id):
         return self.model.getByID(id)

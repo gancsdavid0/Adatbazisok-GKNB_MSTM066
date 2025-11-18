@@ -1,8 +1,8 @@
 from menhely.models.cimek_model import CimModel
 
 class CimekService:
-    def __init__(self, cimek_model: CimModel):
-        self.model = cimek_model
+    def __init__(self, conn):
+        self.model = CimModel(conn)
 
     def getByID(self, id):
         return self.model.getByID(id)

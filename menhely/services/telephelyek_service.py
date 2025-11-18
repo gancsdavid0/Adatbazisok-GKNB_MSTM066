@@ -4,12 +4,11 @@ from menhely.models.befogadhato_allatok_model import Befogadhato_Allatok_Model
 from menhely.models.telephelyek_befogadhato_allatok_model import Telephely_Befogadhato_Allatok_Modell
 
 class TelephelyekService:
-    def __init__(self, telephelyek_model: TelephelyekModel, cimek_model: CimModel, befogadhato_allatok_model: Befogadhato_Allatok_Model,
-                 telephelyek_befogadhato_allatok_Model: Telephely_Befogadhato_Allatok_Modell) -> None:
-        self.model = telephelyek_model
-        self.cim_model = cimek_model
-        self.befogadhato_allatok_model = befogadhato_allatok_model
-        self.telephelyek_befogadhato_allatok_Model = telephelyek_befogadhato_allatok_Model
+    def __init__(self, conn) -> None:
+        self.model = TelephelyekModel(conn)
+        self.cim_model = CimModel(conn)
+        self.befogadhato_allatok_model = Befogadhato_Allatok_Model(conn)
+        self.telephelyek_befogadhato_allatok_Model = Telephely_Befogadhato_Allatok_Modell(conn)
 
     def getByID(self, id):
         return self.model.getByID(id)

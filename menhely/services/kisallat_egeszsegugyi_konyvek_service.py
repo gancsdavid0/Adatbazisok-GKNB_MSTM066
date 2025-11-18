@@ -1,8 +1,8 @@
 from menhely.models.kisallat_egeszsegugyi_konyvek_model import KiskonyvekModel
 
 class Kiskonyvek_Service:
-    def __init__(self, kiskonyvek_model: KiskonyvekModel):
-        self.model = kiskonyvek_model
+    def __init__(self, conn):
+        self.model = KiskonyvekModel(conn)
 
     def getByID(self, id):
         return self.model.getByID(id)
