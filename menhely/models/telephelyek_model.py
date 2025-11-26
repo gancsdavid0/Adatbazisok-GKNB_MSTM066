@@ -25,16 +25,15 @@ class TelephelyekModel(Model):
 
         return Telephely(result[0], result[1]) if result else None
 
-    def create_with_new_address(self) -> Telephely:
+    def create(self, new_address_id:int) -> Telephely:
         cursor = None
         try:
             cursor = self.conn.cursor()
-            new_address_id = self.cim_model._create_cim_trans(cursor)
             query = "INSERT INTO telephelyek (cimek_id) VALUES (?)"
             cursor.execute(query, (new_address_id,))
             new_id = cursor.lastrowid
             self.conn.commit()
-            print(f"Tranzakció sikeres! Új telephely (ID: {new_id}) elmentve.")
+            print(f"Új telephely (ID: {new_id}) létrehozva.")
             return self.getByID(new_id)
 
         except Exception as e:
@@ -45,35 +44,6 @@ class TelephelyekModel(Model):
         finally:
             if cursor:
                 cursor.close()
-
-
-    def create_with_existing_address(self) -> Telephely:
-        params = self._get_params()
-
-        cim = self.cim_model.getByID(params["cimek_id"])
-        if cim:
-            query = (
-                "INSERT INTO telephelyek (cimek_id)"
-                " VALUES (:cimek_id)")
-
-            try:
-                cursor = self.conn.cursor()
-                cursor.execute(query, params)
-                new_id = cursor.lastrowid
-
-                self.conn.commit()
-                return self.getByID(new_id)
-
-            except Exception as e:
-                print(f"Hiba a telephely létrehozása közben: {e}")
-                self.conn.rollback()
-                return None
-        else:
-            print(f'Hiba! Nem létezik ilyen cím.')
-
-    def create(self) -> Telephely:
-        pass
-
 
     def read(self) -> list[Telephely] | None:
         telephelyek = []
@@ -90,7 +60,9 @@ class TelephelyekModel(Model):
             cursor = self.conn.cursor()
             cursor.execute(query)
             rows = cursor.fetchall()
-            return rows
+            for i in rows:
+                telephelyek.append([*i])
+            return telephelyek
         except Exception as e:
             print(f"Hiba a telephelyek olvasása közben: {e}")
             return []
@@ -99,8 +71,10 @@ class TelephelyekModel(Model):
                 cursor.close()
 
     def update(self) -> None:
+        print(f"{'ID':<4} {'RefID':<6} {'IRSZ':<6} {'Város':<15} {'Utca':<25} {'Házszám'}")
+        print("-" * 70)
         for i in self.read():
-            print(i)
+            print(f"{i[0]:<4} {i[1]:<6} {i[2]:<6} {i[3]:<15} {i[4]:<25} {i[5]}")
 
         print("Melyiket szeretnéd módosítani?")
 
@@ -141,19 +115,15 @@ class TelephelyekModel(Model):
             print('Nem létezik ilyen rekord')
             return
 
-        deleted = self.cim_model._delete_cim_trans(current_data.cimek_id)
-        if deleted:
-            try:
-                sql = "DELETE FROM telephelyek WHERE id = :id"
-                self.conn.execute(sql, {"id": id})
-                self.conn.commit()
-            except Exception as e:
-                self.conn.rollback()
-                print(f'Hiba a tölés közben: {e}')
+        try:
+            sql = "DELETE FROM telephelyek WHERE id = :id"
+            self.conn.execute(sql, {"id": id})
+            self.conn.commit()
+        except Exception as e:
+            self.conn.rollback()
+            print(f'Hiba a tölés közben: {e}')
 
             print(f"{id}. rekord törölve lett")
-        else:
-            print(f'Hiba a {current_data} id cím törlése közben.')
 
     def get_kapacitasok_by_telephely_id(self, id):
         current_data = self.getByID(id)

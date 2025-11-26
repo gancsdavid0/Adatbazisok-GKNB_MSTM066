@@ -55,7 +55,6 @@ class Befogadhato_Allatok_Model(Model):
                 Befogadhato_Allat(result[0], result[1], result[2]))
         return lst
 
-    #TODO {befogadhato:allatok_model UPDATE}
     def update(self) -> None:
         pass
 

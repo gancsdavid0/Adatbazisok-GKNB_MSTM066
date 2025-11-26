@@ -86,7 +86,6 @@ class OltasokModel(Model):
     def update(self) -> None:
         for i in self.read():
             print(i.id, i.kisallat_egeszsegugyi_konyvek_id, i.oltas_tipusa, i.oltas_idopontja, i.oltas_ervenyessege, i.allatorvos_neve,  i.megjegyzes)
-
         print("Melyiket szeretnéd módosítani?")
 
         try:
@@ -138,11 +137,11 @@ class OltasokModel(Model):
         return Oltas(result[0], result[1], result[2], result[3], result[4], result[5], result[6], ) if result else None
 
     def getBy_allatokID(self, allatok_id):
-        query = """SELECT allatok.id, o.id, o.oltas_tipusa, o.oltas_idopontja, o.oltas_ervenyessege, o.oltas_ervenyessege, o.allatorvos_neve, o.megjegyzes from allatok
+        query = """SELECT o.id, o.kisallat_egeszsegugyi_konyvek_id, o.oltas_tipusa, o.oltas_idopontja, o.oltas_ervenyessege, o.allatorvos_neve, o.megjegyzes from allatok
             INNER JOIN main.kisallat_egeszsegugyi_konyvek kek on allatok.id = kek.allatok_id
             INNER JOIN main.oltasok o on kek.id = o.kisallat_egeszsegugyi_konyvek_id
                 where allatok.id = :allatok_id"""
-
+        # allatok.id, o.id, o.oltas_tipusa, o.oltas_idopontja, o.oltas_ervenyessege, o.oltas_ervenyessege, o.allatorvos_neve, o.megjegyzes
         try:
             cursor = self.conn.cursor()
 
@@ -151,7 +150,11 @@ class OltasokModel(Model):
             cursor.execute(query, params)
 
             rows = cursor.fetchall()
-            return rows
+            oltasok = []
+            for result in rows:
+                oltasok.append(
+                    Oltas(result[0], result[1], result[2], result[3], result[4], result[5], result[6]))
+            return oltasok
 
         except Exception as e:
             print(f"Hiba az oltások lekérdezésekor: {e}")

@@ -29,12 +29,15 @@ class DolgozokService:
 
     def _list_all_kepesitesek(self):
         print("\n--- Választható Képesítések ---")
+
         kepesitesek = self.kepesites_model.read()
         if not kepesitesek:
             print("Nincsenek képesítések.")
             return False
+        print(f"{'ID':<4} {'Pozíció neve':<25} {'Leírás'}")
+        print("-" * 80)
         for i in kepesitesek:
-            print(i)
+            print(f"{i.id:<4} {i.kepesites_neve:<25} {i.leiras}")
         return True
 
     def manage_kepesitesek(self):
@@ -52,8 +55,10 @@ class DolgozokService:
             if not jelenlegi:
                 print("Nincs még képesítése.")
             else:
-                for i in jelenlegi:
-                    print(i)
+                print(f"{'ID':<4} {'Pozíció neve':<25} {'Leírás'}")
+                print("-" * 80)
+                for i  in jelenlegi:
+                    print(f"{i.id:<4} {i.kepesites_neve:<25} {i.leiras}")
 
             print("\nVálasszon műveletet:")
             print("  1. Képesítés hozzáadása")

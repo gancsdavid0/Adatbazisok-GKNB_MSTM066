@@ -13,31 +13,8 @@ class TelephelyekService:
     def getByID(self, id):
         return self.model.getByID(id)
 
-    def create(self):
-        print("\nÚj Telephely Felvétele")
-        print("Válasszon, hogyan szeretné megadni a címet:")
-        print("  1. Teljesen új cím létrehozása")
-        print("  2. Meglévő cím hozzárendelése")
-        choice = input("Választás (1-2): ")
-
-        if choice == '1':
-            return self._create_with_new_address()
-
-        elif choice == '2':
-            print("Elérhető címek: ")
-            all_cimek = self.cim_model.read()
-            if not all_cimek:
-                print("Nincsenek címek az adatbázisban. Előbb vegyen fel egyet.")
-                return
-
-            print("ID | Cím")
-            for cim in all_cimek:
-                print(cim)
-
-            return self._create_with_existing_address()
-
-        else:
-            print("Érvénytelen választás.")
+    def create(self, new_address_id):
+        return self.model.create(new_address_id)
 
     def manage_telephely_befogadhatosag(self):
         print("\n--- Telephely Befogadóképességének Kezelése ---")
@@ -45,8 +22,10 @@ class TelephelyekService:
         if not self.read():
             return
         else:
-            for i in self.model.read():
-                print(i)
+            print(f"{'ID':<4} {'RefID':<6} {'IRSZ':<6} {'Város':<15} {'Utca':<25} {'Házszám'}")
+            print("-" * 70)
+            for i in self.read():
+                print(f"{i[0]:<4} {i[1]:<6} {i[2]:<6} {i[3]:<15} {i[4]:<25} {i[5]}")
         try:
             telephely_id = input("Válassza ki a kezelni kívánt telephely ID-jét: ")
 
@@ -114,8 +93,8 @@ class TelephelyekService:
         except Exception as e:
             print(f"HIBA: Váratlan hiba történt: {e}")
 
-    def _create_with_new_address(self):
-        return self.model.create_with_new_address()
+    def _create_with_new_address(self, new_address_id):
+        return self.model.create_with_new_address(new_address_id)
 
     def _create_with_existing_address(self):
         return self.model.create_with_existing_address()

@@ -21,7 +21,7 @@ class OrokbefogadokModel(Model):
     def _get_params(self) -> dict:
         params = {"keresztnev": input("Keresztnév: "), "vezeteknev": input("Vezeteknev: "),
                   "szuletesi_datum": input("Születési dátum: "), "telefonszam": input("Telefonszám: "),
-                  "email": input("Email: "), "lakcim": input("Lakcím: "), "felvetel_datuma": datetime.datetime.now(),
+                  "email": input("Email: "), "lakcim": input("Lakcím: "), "felvetel_datuma": datetime.date.today(),
                   "azonosito_okmany_szam": input("Azonosító okmány száma: ")}
         return params
 

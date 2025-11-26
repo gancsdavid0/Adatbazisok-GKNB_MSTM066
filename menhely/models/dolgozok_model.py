@@ -2,6 +2,8 @@ from menhely.models._base import Model
 from dataclasses import dataclass
 import datetime
 
+from menhely.models.kepesitesek_model import Kepesites
+
 
 @dataclass
 class Dolgozo:
@@ -140,7 +142,11 @@ class DolgozokModel(Model):
         try:
             cursor = self.conn.cursor()
             cursor.execute(query, (current_data.id,))
-            return cursor.fetchall()
+            rows = cursor.fetchall()
+            kepesitesek = []
+            for row in rows:
+                kepesitesek.append(Kepesites(row[0], row[1], row[2]))
+            return kepesitesek
         except Exception as e:
             print(f"Hiba a dolgozó képesítéseinek lekérdezése közben: {e}")
             return []

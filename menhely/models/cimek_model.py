@@ -105,39 +105,6 @@ class CimModel(Model):
         print(f"{id}. rekord törölve lett")
         return
 
-
-    def _create_cim_trans(self, cursor):
-        try:
-
-            params = {
-                "iranyitoszam": input("Irányítószám: "),
-                "telepules": input("Település: "),
-                "utca": input("Utca: "),
-                "hazszam": input("Házszám: ")
-            }
-
-            query = (
-                "INSERT INTO cimek (iranyitoszam, telepules, utca, hazszam)"
-                " VALUES (:iranyitoszam, :telepules, :utca, :hazszam)")
-            cursor.execute(query, params)
-
-            return cursor.lastrowid
-        except Exception as e:
-            raise Exception(f'Hiba a cím bekérése közben: {e}')
-
-
-    def _delete_cim_trans(self, id) -> bool:
-        current_data = self.getByID(id)
-        if not current_data:
-            return False
-
-        sql = "DELETE FROM cimek WHERE id = :id"
-
-        self.conn.execute(sql, {"id": id})
-
-        print(f"{id}. id cím törölve lett.")
-        return True
-
     def _update_cim_trans(self, id) -> bool:
 
         try:
